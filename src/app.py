@@ -36,5 +36,32 @@ def get_task(task_id):
         return jsonify({"error": "Tarefa nao encontrada."}), 404
     return jsonify(task.to_dict()), 200
 
+@app.route('/tasks/<int:task_id>', methods=['PUT'])
+def update_task(task_id):
+    task = tasks_db.get(task_id)
+    if not task:
+        return jsonify({"error": "Tarefa nao encontrada."}), 404
+    
+    data = request.get_json() or {}
+    
+    if 'title' in data:
+        if not data.get('title').strip():
+            return jsonify({"error": "O titulo da tarefa nao pode ser vazio."}), 400
+        task.title = data['title']
+        
+    if 'description' in data:
+        task.description = data['description']
+    if 'status' in data:
+        task.status = data['status']
+        
+    return jsonify(task.to_dict()), 200
+
+@app.route('/tasks/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    if task_id in tasks_db:
+        del tasks_db[task_id]
+        return jsonify({"message": "Tarefa removida com sucesso."}), 200
+    return jsonify({"error": "Tarefa nao encontrada."}), 404
+
 if __name__ == '__main__':
     app.run(debug=True)
