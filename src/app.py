@@ -25,5 +25,16 @@ def create_task():
     current_id += 1
     return jsonify(task.to_dict()), 201
 
+@app.route('/tasks', methods=['GET'])
+def get_tasks():
+    return jsonify([task.to_dict() for task in tasks_db.values()]), 200
+
+@app.route('/tasks/<int:task_id>', methods=['GET'])
+def get_task(task_id):
+    task = tasks_db.get(task_id)
+    if not task:
+        return jsonify({"error": "Tarefa nao encontrada."}), 404
+    return jsonify(task.to_dict()), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
