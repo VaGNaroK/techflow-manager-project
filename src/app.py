@@ -3,6 +3,7 @@ from models import Task
 
 app = Flask(__name__)
 
+# Banco de dados simulado em memÃ³ria
 tasks_db = {}
 current_id = 1
 
@@ -11,6 +12,7 @@ def create_task():
     global current_id
     data = request.get_json() or {}
     
+    # ValidaÃ§Ã£o de Entrada ObrigatÃ³ria para Qualidade
     if not data.get('title') or not data.get('title').strip():
         return jsonify({"error": "O titulo da tarefa e obrigatorio."}), 400
 
@@ -18,7 +20,8 @@ def create_task():
         task_id=current_id,
         title=data.get('title'),
         description=data.get('description', ''),
-        status=data.get('status', 'A Fazer')
+        status=data.get('status', 'A Fazer'),
+        priority=data.get('priority', 'MÃ©dia') # Suporta a mudanÃ§a de escopo
     )
     
     tasks_db[current_id] = task
@@ -53,6 +56,8 @@ def update_task(task_id):
         task.description = data['description']
     if 'status' in data:
         task.status = data['status']
+    if 'priority' in data:
+        task.priority = data['priority']
         
     return jsonify(task.to_dict()), 200
 
