@@ -3,7 +3,7 @@ class Task:
         self.id = task_id
         self.title = title
         self.description = description
-        self.status = status  # A Fazer, Em Progresso, Concluído
+        self.status = status  # Estado: A Fazer, Em Progresso, Concluído
         self.priority = priority  # Adicionado na alteração de escopo: Baixa, Média, Alta
 
     def to_dict(self):
