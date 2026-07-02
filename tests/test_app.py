@@ -1,8 +1,8 @@
-﻿import sys
+import sys
 import os
 import pytest
 
-# Adiciona o diretÃ³rio src ao path para os testes localizarem os mÃ³dulos
+# Adiciona o diretório src ao path para os testes localizarem os módulos
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 from app import app, tasks_db
@@ -16,7 +16,7 @@ def client():
         yield client
 
 def test_create_task_success(client):
-    """Garante que uma tarefa vÃ¡lida de logÃ­stica Ã© criada com sucesso."""
+    """Garante que uma tarefa válida de logística é criada com sucesso."""
     response = client.post('/tasks', json={
         "title": "Carregamento Caminhao 01",
         "description": "Fazer a triagem e embarque de 40 pacotes prioritarios."
@@ -28,7 +28,7 @@ def test_create_task_success(client):
     assert data['status'] == "A Fazer"
 
 def test_create_task_missing_title(client):
-    """Controle de Qualidade: Garante que validaÃ§Ãµes de entrada barram dados inconsistentes."""
+    """Controle de Qualidade: Garante que validações de entrada barram dados inconsistentes."""
     response = client.post('/tasks', json={
         "title": "   ",
         "description": "Sem titulo valido"
@@ -46,7 +46,7 @@ def test_get_all_tasks(client):
     assert len(response.get_json()) == 2
 
 def test_update_task_status(client):
-    """Simula a movimentaÃ§Ã£o de uma tarefa no fluxo Kanban (A Fazer -> Em Progresso)."""
+    """Simula a movimentação de uma tarefa no fluxo Kanban (A Fazer -> Em Progresso)."""
     create_res = client.post('/tasks', json={"title": "Alocacao de Motoristas"})
     task_id = create_res.get_json()['id']
     
