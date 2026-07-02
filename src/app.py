@@ -1,9 +1,9 @@
-﻿from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request
 from models import Task
 
 app = Flask(__name__)
 
-# Banco de dados simulado em memÃ³ria
+# Simulação do Banco de dados
 tasks_db = {}
 current_id = 1
 
@@ -12,7 +12,7 @@ def create_task():
     global current_id
     data = request.get_json() or {}
     
-    # ValidaÃ§Ã£o de Entrada ObrigatÃ³ria para Qualidade
+    # Validação de Entrada
     if not data.get('title') or not data.get('title').strip():
         return jsonify({"error": "O titulo da tarefa e obrigatorio."}), 400
 
