@@ -26,6 +26,7 @@ def test_create_task_success(client):
     assert data['id'] == 1
     assert data['title'] == "Carregamento Caminhão 01"
     assert data['status'] == "A Fazer"
+    assert data['priority'] == "Média" # O valor padrão é Média
 
 def test_create_task_missing_title(client):
     """Controle de Qualidade: Faz com que valide a entrada e barram dados inconsistentes."""
@@ -53,3 +54,12 @@ def test_update_task_status(client):
     update_res = client.put(f'/tasks/{task_id}', json={"status": "Em Progresso"})
     assert update_res.status_code == 200
     assert update_res.get_json()['status'] == "Em Progresso"
+
+def test_update_task_priority(client):
+    """Verifica a atualização de prioridade de uma tarefa (ex: Média -> Alta)."""
+    create_res = client.post('/tasks', json={"title": "Entrega Urgente"})
+    task_id = create_res.get_json()['id']
+    
+    update_res = client.put(f'/tasks/{task_id}', json={"priority": "Alta"})
+    assert update_res.status_code == 200
+    assert update_res.get_json()['priority'] == "Alta"

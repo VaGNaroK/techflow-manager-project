@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from models import Task
 
 app = Flask(__name__)
@@ -6,6 +6,10 @@ app = Flask(__name__)
 # Simulação do Banco de dados
 tasks_db = {}
 current_id = 1
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
 
 @app.route('/tasks', methods=['POST'])
 def create_task():
